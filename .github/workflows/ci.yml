@@ -1,0 +1,28 @@
+name: Node.js CD Demo
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      - name: Install deps
+        run: npm install
+
+      - name: Run Deploy Script
+        run: bash deploy.sh
+
+      - name: Upload Deployment Folder
+        uses: actions/upload-artifact@v4
+        with:
+          name: deploy-zip
+          path: deploy
