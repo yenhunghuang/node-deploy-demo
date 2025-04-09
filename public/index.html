@@ -10,24 +10,49 @@
         align-items: center;
         height: 100vh;
         margin: 0;
-        background-color: #f0f2f5;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       }
       .container {
         text-align: center;
         padding: 2rem;
         background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        max-width: 500px;
+        width: 90%;
       }
       h1 {
-        color: #1a73e8;
+        color: #4c1d95;
+        margin-bottom: 1rem;
+      }
+      .timestamp {
+        color: #6b7280;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        padding: 0.5rem;
+        background: #f3f4f6;
+        border-radius: 8px;
+        display: inline-block;
+      }
+      .rocket {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        animation: bounce 2s infinite;
+      }
+      @keyframes bounce {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-10px); }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>🚀 自動部署成功！</h1>
-      <p>透過 Webhook 自動部署測試 - 更新於 <span id="timestamp"></span></p>
+      <div class="rocket">🚀</div>
+      <h1>自動部署成功！</h1>
+      <p>透過 GitHub Actions + Webhook 自動部署</p>
+      <div class="timestamp">
+        更新於 <span id="timestamp"></span>
+      </div>
     </div>
     <script>
       document.getElementById('timestamp').textContent = new Date().toLocaleString('zh-TW', {
