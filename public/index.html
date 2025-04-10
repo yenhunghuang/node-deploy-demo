@@ -1,87 +1,79 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Hello CD</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      }
-      .container {
-        text-align: center;
-        padding: 2rem;
-        background: white;
-        border-radius: 16px;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        max-width: 500px;
-        width: 90%;
-      }
-      h1 {
-        color: #4c1d95;
-        margin-bottom: 1rem;
-      }
-      .timestamp {
-        color: #6b7280;
-        font-size: 0.9rem;
-        margin-top: 1rem;
-        padding: 0.5rem;
-        background: #f3f4f6;
-        border-radius: 8px;
-        display: inline-block;
-      }
-      .rocket {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        animation: bounce 2s infinite;
-      }
-      @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-10px); }
-      }
-      .timer {
-        margin-top: 1rem;
-        font-size: 0.8rem;
-        color: #9ca3af;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <div class="rocket">🚀</div>
-      <h1>自動部署成功！</h1>
-      <p>透過 GitHub Actions + Webhook 自動部署</p>
-      <div class="timestamp">
-        部署時間：<span id="timestamp"></span>
-      </div>
-      <div class="timer">
-        部署已運行：<span id="uptime">0</span> 秒
-      </div>
-    </div>
-    <script>
-      // 設置部署時間
-      document.getElementById('timestamp').textContent = new Date().toLocaleString('zh-TW', {
-        timeZone: 'Asia/Taipei',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-      });
+<html lang="zh-TW">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hello CD 🚀</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+                    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+                    "Helvetica Neue", sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+                text-align: center;
+                background-color: #f5f5f5;
+            }
+            .container {
+                background-color: white;
+                padding: 2rem;
+                border-radius: 10px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+                color: #2c3e50;
+                margin-bottom: 1rem;
+            }
+            .success-message {
+                color: #27ae60;
+                font-size: 1.2rem;
+                margin: 1rem 0;
+            }
+            .time-info {
+                background-color: #f8f9fa;
+                padding: 1rem;
+                border-radius: 5px;
+                margin: 1rem 0;
+            }
+            .test-message {
+                color: #e74c3c;
+                font-weight: bold;
+                margin-top: 1rem;
+                padding: 0.5rem;
+                background-color: #ffeaa7;
+                border-radius: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Hello CD 🚀</h1>
+            <p class="success-message">自動部署成功！</p>
+            <div class="time-info">
+                <p>部署時間：<span id="deployTime"></span></p>
+                <p>運行時間：<span id="uptime">0</span> 秒</p>
+            </div>
+            <p class="test-message">
+                測試自動部署 - 更新時間：<span id="updateTime"></span>
+            </p>
+        </div>
 
-      // 更新運行時間
-      const deployTime = new Date();
-      setInterval(() => {
-        const now = new Date();
-        const diff = Math.floor((now - deployTime) / 1000);
-        document.getElementById('uptime').textContent = diff;
-      }, 1000);
-    </script>
-  </body>
+        <script>
+            // 設置當前時間為部署時間
+            const deployTime = new Date().toLocaleString("zh-TW");
+            document.getElementById("deployTime").textContent = deployTime;
+
+            // 更新運行時間
+            let seconds = 0;
+            setInterval(() => {
+                seconds++;
+                document.getElementById("uptime").textContent = seconds;
+            }, 1000);
+
+            // 設置更新時間
+            const updateTime = new Date().toLocaleString("zh-TW");
+            document.getElementById("updateTime").textContent = updateTime;
+        </script>
+    </body>
 </html>
