@@ -9,6 +9,9 @@ GITHUB_TOKEN=$(grep GITHUB_TOKEN .env | cut -d= -f2)
 OWNER="yenhunghuang"
 REPO="node-deploy-demo"
 
+echo "🚀 開始部署流程..."
+echo "📦 正在檢查最新的 workflow run..."
+
 # Step 1: 取得最新成功的 workflow run
 WORKFLOW_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$OWNER/$REPO/actions/runs?per_page=1")
@@ -20,6 +23,8 @@ if [ "$WORKFLOW_RUN_ID" = "null" ] || [ -z "$WORKFLOW_RUN_ID" ]; then
   exit 1
 fi
 
+echo "✅ 找到最新的 workflow run: $WORKFLOW_RUN_ID"
+
 # Step 2: 確認是否成功完成
 STATUS_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$WORKFLOW_RUN_ID")
@@ -27,12 +32,16 @@ STATUS_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
 STATUS=$(echo "$STATUS_RESPONSE" | jq -r '.status')
 CONCLUSION=$(echo "$STATUS_RESPONSE" | jq -r '.conclusion')
 
+echo "📋 Workflow 狀態: $STATUS"
+echo "📋 執行結果: $CONCLUSION"
+
 if [ "$STATUS" != "completed" ] || [ "$CONCLUSION" != "success" ]; then
   echo "❌ 工作流程尚未完成或失敗，無法部署"
   exit 1
 fi
 
 # Step 3: 抓取 artifact ID
+echo "🔍 正在查找構建產物..."
 ARTIFACTS_RESPONSE=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
   "https://api.github.com/repos/$OWNER/$REPO/actions/runs/$WORKFLOW_RUN_ID/artifacts")
 
@@ -43,7 +52,10 @@ if [ "$ARTIFACT_ID" = "null" ] || [ -z "$ARTIFACT_ID" ]; then
   exit 1
 fi
 
+echo "✅ 找到構建產物 ID: $ARTIFACT_ID"
+
 # Step 4: 下載與解壓縮 artifact
+echo "📥 正在下載構建產物..."
 curl -s -L -H "Authorization: token $GITHUB_TOKEN" \
   -H "Accept: application/vnd.github.v3+json" \
   "https://api.github.com/repos/$OWNER/$REPO/actions/artifacts/$ARTIFACT_ID/zip" \
@@ -54,14 +66,20 @@ if [ ! -f artifact.zip ]; then
   exit 1
 fi
 
-# Step 5: 部署到 public/ 或 deploy/
-echo "📂 解壓並部署..."
+# Step 5: 部署到 public/ 目錄
+echo "📂 正在解壓並部署..."
 rm -rf deploy
 mkdir -p deploy
 unzip -o artifact.zip -d deploy/
 rm artifact.zip
 
-# 可選：自動取代 public 內容（正式上線）
-# rm -rf public/* && cp -r deploy/* public/
+# 更新 public 目錄內容
+echo "🔄 更新網站內容..."
+rm -rf public/*
+cp -r deploy/* public/
 
-echo "✅ 自動部署完成！可以透過 localhost 或 ngrok 查看部署成果。"
+echo "✨ 清理臨時文件..."
+rm -rf deploy
+
+echo "✅ 自動部署完成！"
+echo "🌐 您可以通過 http://localhost:3000 或 ngrok URL 查看更新後的網站。"
