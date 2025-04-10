@@ -190,3 +190,44 @@ MIT
 ## 貢獻
 
 歡迎提交 Issue 和 Pull Request！
+
+## 部署腳本功能
+
+webhook_deploy.sh 腳本提供以下功能：
+
+-   自動從 GitHub Actions 下載最新的構建產物
+-   驗證 workflow 運行狀態
+-   解壓並更新網站內容
+-   提供詳細的部署日誌
+
+## Docker 環境說明
+
+Docker 映像檔包含以下工具和功能：
+
+-   git：用於代碼更新
+-   curl：用於 API 請求
+-   jq：用於解析 JSON 響應
+-   unzip：用於解壓構建產物
+-   bash：用於執行部署腳本
+
+## 開發流程
+
+1. 本地開發：
+
+    ```bash
+    # 修改代碼後
+    git add .
+    git commit -m "您的提交信息"
+    git push
+    ```
+
+2. 自動化流程：
+
+    - GitHub Actions 自動構建
+    - Webhook 觸發本地部署
+    - 部署腳本執行更新
+
+3. 驗證部署：
+    - 訪問 http://localhost:3000
+    - 檢查部署時間和更新內容
+    - 查看容器日誌了解部署狀態
