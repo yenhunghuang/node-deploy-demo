@@ -10,21 +10,27 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout code
+            - name: Check out code
               uses: actions/checkout@v3
+
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
 
             - name: Set up Docker Buildx
               uses: docker/setup-buildx-action@v3
 
-            - name: Login to Docker Hub
+            - name: Log in to Docker Hub
               uses: docker/login-action@v3
               with:
                   username: yenhung
                   password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-            - name: Build and Push Docker image
+            - name: Build and push
               uses: docker/build-push-action@v5
               with:
                   context: .
+                  platforms: linux/amd64
                   push: true
                   tags: yenhung/node-deploy-demo:latest
+                  cache-from: type=registry,ref=yenhung/node-deploy-demo:latest
+                  cache-to: type=inline
