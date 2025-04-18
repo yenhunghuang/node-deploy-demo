@@ -1,15 +1,30 @@
-# 自動部署示範專案 🚀
+# Node.js Deployment Demo
 
-這個專案展示了如何使用 GitHub Actions 和 Webhook 實現自動化部署流程。
+這是一個示範 Node.js 應用程序的自動部署流程的專案。
 
 ## 功能特點
 
--   ✨ GitHub Actions 自動化部署
--   🔄 Webhook 觸發本地部署
--   ⏱️ 部署時間計數器
--   🔒 安全的 Webhook 驗證
--   📊 即時部署狀態顯示
--   🐳 Docker 容器化支援
+-   使用 GitHub Actions 實現 CI/CD
+-   Docker 容器化部署
+-   自動化部署流程
+-   Webhook 觸發更新
+
+## 部署流程
+
+1. 推送代碼到 GitHub
+2. GitHub Actions 自動觸發構建
+3. 構建 Docker 映像並推送到 Docker Hub
+4. 執行部署腳本
+
+## 環境要求
+
+-   Node.js 18.x
+-   Docker
+-   Git
+
+## 測試更新
+
+這是一個測試更新，用於觸發 GitHub Actions 工作流程。
 
 ## 技術棧
 
