@@ -248,3 +248,20 @@ Docker 映像檔包含以下工具和功能：
     - 訪問 http://localhost:3000
     - 檢查部署時間和更新內容
     - 查看容器日誌了解部署狀態
+
+# Node.js 示例项目
+
+这是一个使用 Node.js 和 Express 构建的示例项目。
+
+## 功能特点
+
+-   Express 服务器
+-   Docker 容器化
+-   GitHub Actions 自动构建
+-   多架构支持 (AMD64/ARM64)
+-   Render 自动部署
+
+## 测试自动化部署流程
+
+-   当前时间：2024 年 3 月 19 日
+-   目的：验证 GitHub Actions → Docker Hub → Render 的自动化部署流程

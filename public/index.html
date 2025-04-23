@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Hello CD 🚀</title>
+        <title>自动化部署演示 🚀</title>
         <style>
             body {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
@@ -13,67 +13,120 @@
                 margin: 0 auto;
                 padding: 2rem;
                 text-align: center;
-                background-color: #f5f5f5;
+                background-color: #f0f2f5;
             }
             .container {
                 background-color: white;
                 padding: 2rem;
-                border-radius: 10px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                border-radius: 15px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
             h1 {
-                color: #2c3e50;
-                margin-bottom: 1rem;
+                color: #1a73e8;
+                margin-bottom: 1.5rem;
+                font-size: 2.5rem;
             }
             .success-message {
-                color: #27ae60;
-                font-size: 1.2rem;
-                margin: 1rem 0;
+                color: #0f9d58;
+                font-size: 1.3rem;
+                margin: 1.5rem 0;
+                font-weight: 600;
             }
             .time-info {
                 background-color: #f8f9fa;
-                padding: 1rem;
-                border-radius: 5px;
-                margin: 1rem 0;
+                padding: 1.5rem;
+                border-radius: 10px;
+                margin: 1.5rem 0;
+                border: 1px solid #e1e4e8;
             }
             .test-message {
-                color: #e74c3c;
+                color: #d93025;
                 font-weight: bold;
-                margin-top: 1rem;
+                margin-top: 1.5rem;
+                padding: 1rem;
+                background-color: #fef7e0;
+                border-radius: 10px;
+                border: 1px solid #feefc3;
+            }
+            .deployment-info {
+                margin-top: 2rem;
+                padding: 1rem;
+                background-color: #e8f0fe;
+                border-radius: 10px;
+                color: #1a73e8;
+            }
+            .deployment-info h2 {
+                color: #1967d2;
+                font-size: 1.5rem;
+                margin-bottom: 1rem;
+            }
+            .deployment-steps {
+                text-align: left;
+                margin: 1rem auto;
+                max-width: 400px;
+            }
+            .deployment-steps li {
+                margin: 0.5rem 0;
                 padding: 0.5rem;
-                background-color: #ffeaa7;
+                background-color: white;
                 border-radius: 5px;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>Hello CD 🚀</h1>
-            <p class="success-message">自動部署成功！</p>
+            <h1>自动化部署演示 🚀</h1>
+            <p class="success-message">部署成功！</p>
             <div class="time-info">
-                <p>部署時間：<span id="deployTime"></span></p>
-                <p>運行時間：<span id="uptime">0</span> 秒</p>
+                <p>部署时间：<span id="deployTime"></span></p>
+                <p>运行时间：<span id="uptime">0</span> 秒</p>
+            </div>
+            <div class="deployment-info">
+                <h2>部署流程</h2>
+                <ul class="deployment-steps">
+                    <li>1. 代码推送到 GitHub</li>
+                    <li>2. GitHub Actions 构建 Docker 镜像</li>
+                    <li>3. 推送到 Docker Hub</li>
+                    <li>4. 触发 Render Deploy Hook</li>
+                    <li>5. Render 自动部署新版本</li>
+                </ul>
             </div>
             <p class="test-message">
-                測試完整部署流程（使用 GitHub Actions + Artifacts）-
-                更新時間：<span id="updateTime"></span>
+                测试完整自动化部署流程 - 更新时间：<span id="updateTime"></span>
             </p>
         </div>
 
         <script>
-            // 設置當前時間為部署時間
-            const deployTime = new Date().toLocaleString("zh-TW");
+            // 设置当前时间为部署时间
+            const deployTime = new Date().toLocaleString("zh-TW", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            });
             document.getElementById("deployTime").textContent = deployTime;
 
-            // 更新運行時間
+            // 更新运行时间
             let seconds = 0;
             setInterval(() => {
                 seconds++;
                 document.getElementById("uptime").textContent = seconds;
             }, 1000);
 
-            // 設置更新時間
-            const updateTime = new Date().toLocaleString("zh-TW");
+            // 设置更新时间
+            const updateTime = new Date().toLocaleString("zh-TW", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: false,
+            });
             document.getElementById("updateTime").textContent = updateTime;
         </script>
     </body>
