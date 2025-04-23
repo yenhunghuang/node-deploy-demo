@@ -5,96 +5,211 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>自动化部署演示 🚀</title>
         <style>
+            :root {
+                --primary: #2563eb;
+                --success: #16a34a;
+                --background: #f8fafc;
+                --surface: #ffffff;
+                --text: #1e293b;
+                --text-secondary: #64748b;
+                --border: #e2e8f0;
+            }
+
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+
             body {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                     Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
                     "Helvetica Neue", sans-serif;
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 2rem;
-                text-align: center;
-                background-color: #f0f2f5;
+                background-color: var(--background);
+                color: var(--text);
+                line-height: 1.5;
+                -webkit-font-smoothing: antialiased;
             }
+
             .container {
-                background-color: white;
+                max-width: 640px;
+                margin: 2rem auto;
+                padding: 1rem;
+            }
+
+            .card {
+                background-color: var(--surface);
+                border-radius: 1rem;
                 padding: 2rem;
-                border-radius: 15px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+                transition: transform 0.2s ease;
             }
+
+            .card:hover {
+                transform: translateY(-2px);
+            }
+
             h1 {
-                color: #1a73e8;
+                color: var(--primary);
+                font-size: 2rem;
+                font-weight: 700;
                 margin-bottom: 1.5rem;
-                font-size: 2.5rem;
+                text-align: center;
             }
-            .success-message {
-                color: #0f9d58;
-                font-size: 1.3rem;
-                margin: 1.5rem 0;
+
+            .status {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                margin-bottom: 2rem;
+            }
+
+            .status-dot {
+                width: 8px;
+                height: 8px;
+                background-color: var(--success);
+                border-radius: 50%;
+                animation: pulse 2s infinite;
+            }
+
+            .status-text {
+                color: var(--success);
                 font-weight: 600;
             }
-            .time-info {
-                background-color: #f8f9fa;
-                padding: 1.5rem;
-                border-radius: 10px;
-                margin: 1.5rem 0;
-                border: 1px solid #e1e4e8;
+
+            .info-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
             }
-            .test-message {
-                color: #d93025;
-                font-weight: bold;
-                margin-top: 1.5rem;
+
+            .info-item {
                 padding: 1rem;
-                background-color: #fef7e0;
-                border-radius: 10px;
-                border: 1px solid #feefc3;
+                background-color: var(--background);
+                border-radius: 0.5rem;
+                text-align: center;
             }
-            .deployment-info {
+
+            .info-label {
+                color: var(--text-secondary);
+                font-size: 0.875rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .info-value {
+                font-weight: 600;
+                font-size: 1.125rem;
+            }
+
+            .steps {
+                border-top: 1px solid var(--border);
+                padding-top: 2rem;
                 margin-top: 2rem;
-                padding: 1rem;
-                background-color: #e8f0fe;
-                border-radius: 10px;
-                color: #1a73e8;
             }
-            .deployment-info h2 {
-                color: #1967d2;
-                font-size: 1.5rem;
+
+            .steps h2 {
+                color: var(--primary);
+                font-size: 1.25rem;
                 margin-bottom: 1rem;
+                text-align: center;
             }
-            .deployment-steps {
-                text-align: left;
-                margin: 1rem auto;
-                max-width: 400px;
+
+            .steps-list {
+                list-style: none;
+                counter-reset: step;
             }
-            .deployment-steps li {
-                margin: 0.5rem 0;
-                padding: 0.5rem;
-                background-color: white;
-                border-radius: 5px;
-                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+            .steps-list li {
+                position: relative;
+                padding: 1rem 1rem 1rem 3rem;
+                margin-bottom: 0.5rem;
+                background-color: var(--background);
+                border-radius: 0.5rem;
+                transition: transform 0.2s ease;
+            }
+
+            .steps-list li:hover {
+                transform: translateX(4px);
+            }
+
+            .steps-list li::before {
+                counter-increment: step;
+                content: counter(step);
+                position: absolute;
+                left: 1rem;
+                color: var(--primary);
+                font-weight: 600;
+                width: 1.5rem;
+                text-align: center;
+            }
+
+            @keyframes pulse {
+                0% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+                50% {
+                    transform: scale(1.5);
+                    opacity: 0.5;
+                }
+                100% {
+                    transform: scale(1);
+                    opacity: 1;
+                }
+            }
+
+            @media (max-width: 640px) {
+                .container {
+                    margin: 1rem;
+                    padding: 0;
+                }
+
+                .card {
+                    padding: 1.5rem;
+                }
+
+                h1 {
+                    font-size: 1.5rem;
+                }
             }
         </style>
     </head>
     <body>
         <div class="container">
-            <h1>自动化部署演示 🚀</h1>
-            <p class="success-message">部署成功！</p>
-            <div class="time-info">
-                <p>部署时间：<span id="deployTime"></span></p>
-                <p>运行时间：<span id="uptime">0</span> 秒</p>
+            <div class="card">
+                <h1>自动化部署演示 🚀</h1>
+
+                <div class="status">
+                    <div class="status-dot"></div>
+                    <span class="status-text">部署成功</span>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <div class="info-label">部署时间</div>
+                        <div class="info-value" id="deployTime"></div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label">运行时间</div>
+                        <div class="info-value">
+                            <span id="uptime">0</span> 秒
+                        </div>
+                    </div>
+                </div>
+
+                <div class="steps">
+                    <h2>部署流程</h2>
+                    <ul class="steps-list">
+                        <li>代码推送到 GitHub</li>
+                        <li>GitHub Actions 构建 Docker 镜像</li>
+                        <li>推送到 Docker Hub</li>
+                        <li>触发 Render Deploy Hook</li>
+                        <li>Render 自动部署新版本</li>
+                    </ul>
+                </div>
             </div>
-            <div class="deployment-info">
-                <h2>部署流程</h2>
-                <ul class="deployment-steps">
-                    <li>1. 代码推送到 GitHub</li>
-                    <li>2. GitHub Actions 构建 Docker 镜像</li>
-                    <li>3. 推送到 Docker Hub</li>
-                    <li>4. 触发 Render Deploy Hook</li>
-                    <li>5. Render 自动部署新版本</li>
-                </ul>
-            </div>
-            <p class="test-message">
-                测试完整自动化部署流程 - 更新时间：<span id="updateTime"></span>
-            </p>
         </div>
 
         <script>
@@ -116,18 +231,6 @@
                 seconds++;
                 document.getElementById("uptime").textContent = seconds;
             }, 1000);
-
-            // 设置更新时间
-            const updateTime = new Date().toLocaleString("zh-TW", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: false,
-            });
-            document.getElementById("updateTime").textContent = updateTime;
         </script>
     </body>
 </html>
