@@ -90,9 +90,19 @@ Webhook Secret: ${webhookSecret}
   `);
 });
 
-// 健康檢查端點
+// 健康檢查端點 - 優化用於 UptimeRobot 監控
 app.get("/health", (req, res) => {
-    res.status(200).send("OK");
+    const healthData = {
+        status: "OK",
+        timestamp: new Date().toISOString(),
+        uptime: process.uptime(),
+        memory: process.memoryUsage(),
+        version: process.env.npm_package_version || "1.0.0",
+        environment: process.env.NODE_ENV,
+    };
+
+    // UptimeRobot 主要檢查狀態碼，同時我們提供詳細信息供需要時查看
+    res.status(200).json(healthData);
 });
 
 app.listen(port, () => {
