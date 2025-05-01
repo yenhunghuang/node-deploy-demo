@@ -328,3 +328,7 @@ Docker 映像檔包含以下工具和功能：
 
 -   当前时间：2024 年 3 月 19 日
 -   目的：验证 GitHub Actions → Docker Hub → Render 的自动化部署流程
+
+## 部署狀態
+
+![Helm Deploy](https://github.com/yenhunghuang/node-deploy-demo/actions/workflows/helm-deploy.yml/badge.svg)
