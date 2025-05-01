@@ -12,6 +12,41 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v3
 
+            - name: Check minikube status
+              run: |
+                  if ! minikube status | grep -q "Running"; then
+                      echo "Starting minikube..."
+                      minikube start
+                  else
+                      echo "Minikube is already running"
+                  fi
+
+            - name: Ensure minikube tunnel
+              run: |
+                  if ! pgrep -f "minikube tunnel" > /dev/null; then
+                      echo "Starting minikube tunnel in background..."
+                      nohup minikube tunnel > tunnel.log 2>&1 &
+                      sleep 10  # 等待 tunnel 建立
+                  else
+                      echo "Minikube tunnel is already running"
+                  fi
+
+            - name: Set up Docker Buildx
+              uses: docker/setup-buildx-action@v2
+
+            - name: Login to Docker Hub
+              uses: docker/login-action@v2
+              with:
+                  username: ${{ secrets.DOCKERHUB_USERNAME }}
+                  password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+            - name: Build and push Docker image
+              uses: docker/build-push-action@v4
+              with:
+                  context: .
+                  push: true
+                  tags: yenhung/node-deploy-demo:latest,yenhung/node-deploy-demo:${{ github.sha }}
+
             - name: Set up kubectl
               uses: azure/setup-kubectl@v3
               with:
@@ -22,12 +57,8 @@ jobs:
               with:
                   version: "v3.14.0"
 
-            - name: Decode kubeconfig
-              run: |
-                  echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > kubeconfig
-                  export KUBECONFIG=$PWD/kubeconfig
-
             - name: Helm Upgrade
               run: |
                   helm upgrade --install node-deploy-demo ./node-deploy-demo-chart \
+                    --set image.tag=${{ github.sha }} \
                     --set env.APP_VERSION=${{ github.sha }}
