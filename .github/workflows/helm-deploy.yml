@@ -7,6 +7,8 @@ on:
 jobs:
     deploy:
         runs-on: ubuntu-latest
+        env:
+            KUBECONFIG: ${{ github.workspace }}/kubeconfig
 
         steps:
             - name: Checkout code
@@ -40,8 +42,11 @@ jobs:
 
             - name: Decode kubeconfig
               run: |
-                  echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > kubeconfig
-                  export KUBECONFIG=$PWD/kubeconfig
+                  echo "${{ secrets.KUBECONFIG_BASE64 }}" | base64 -d > $KUBECONFIG
+                  chmod 600 $KUBECONFIG
+
+            - name: Test kubectl connection
+              run: kubectl cluster-info
 
             - name: Helm Upgrade
               run: |
