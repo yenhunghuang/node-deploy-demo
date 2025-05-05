@@ -1,0 +1,30 @@
+replicaCount: 2
+
+image:
+    repository: yenhung/node-deploy-demo
+    tag: latest
+    pullPolicy: IfNotPresent
+
+service:
+    type: LoadBalancer
+    port: 3000
+
+app:
+    name: node-deploy-demo-prod
+
+env:
+  APP_VERSION: prod
+
+# Redis 配置
+redis:
+  enabled: true
+  auth:
+    enabled: true
+    password: "CHANGE_ME_IN_SECRETS"
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 1
+    persistence:
+      enabled: false 

@@ -1,0 +1,27 @@
+replicaCount: 2
+
+image:
+    repository: yenhung/node-deploy-demo
+    tag: staging
+    pullPolicy: IfNotPresent
+
+service:
+    type: LoadBalancer
+    port: 3000
+
+app:
+    name: node-deploy-demo-staging
+
+env:
+  APP_VERSION: staging
+
+# Redis 配置
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0

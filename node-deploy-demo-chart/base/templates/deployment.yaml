@@ -26,5 +26,11 @@ spec:
           env:
             - name: APP_VERSION
               value: "{{ .Values.env.APP_VERSION }}"
+          {{- if .Values.redis.enabled }}
+            - name: REDIS_HOST
+              value: "{{ .Release.Name }}-redis-master"
+            - name: REDIS_PORT
+              value: "6379"
+          {{- end }}
           ports:
             - containerPort: 3000

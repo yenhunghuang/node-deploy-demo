@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test-api-response"
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
+spec:
+  containers:
+    - name: curl-test
+      image: curlimages/curl
+      command: 
+        - sh
+        - -c
+        - |
+          RESPONSE=$(curl -s {{ .Release.Name }}-svc:{{ .Values.service.port }})
+          echo "API Response: $RESPONSE"
+          if [[ "$RESPONSE" == *"部署成功"* ]]; then
+            echo "✅ Test passed - Found '部署成功' in response"
+            exit 0
+          else
+            echo "❌ Test failed - Could not find '部署成功' in response"
+            exit 1
+          fi
+  restartPolicy: Never 

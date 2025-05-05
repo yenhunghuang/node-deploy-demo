@@ -6,12 +6,22 @@ image:
     pullPolicy: IfNotPresent
 
 service:
-    type: NodePort
+    type: LoadBalancer
     port: 3000
-    nodePort: 31000
 
 app:
     name: node-deploy-demo
 
 env:
   APP_VERSION: v2
+
+# Redis 配置
+redis:
+  enabled: true
+  auth:
+    enabled: false
+  master:
+    persistence:
+      enabled: false
+  replica:
+    replicaCount: 0
