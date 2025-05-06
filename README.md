@@ -332,3 +332,5 @@ Docker 映像檔包含以下工具和功能：
 ## 部署狀態
 
 ![Helm Deploy](https://github.com/yenhunghuang/node-deploy-demo/actions/workflows/helm-deploy.yml/badge.svg)
+
+> 測試 GitHub Actions workflow 觸發（`2025-05-03`）
